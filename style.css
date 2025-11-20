@@ -1,0 +1,568 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+:root{
+    --bg-color: #1f242d;
+    --second-bg-color: #323946;
+    --text-color: #fff;
+    --main-color:#0ef;
+
+}
+html{
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+body{
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+section{
+    min-height: 100vh;
+    padding: 10rem 9% 2rem;
+}
+.header{
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 9%;
+    background: var(--bg-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+.header .sticky{
+    border-bottom: .1rem solid rgba(0, 0, 0, .2);
+}
+
+.logo{
+    font-size: 2.5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    cursor: default;
+}
+.navbar a {
+    font-size: 1.7rem;
+    color: var(--text-color);
+    margin-left: 4rem;
+    transition: .3s;
+}
+
+.navbar a:hover,
+.navbar a.active{
+    color: var(--main-color);
+}
+#menu-icon{
+    font-size: 3.6rem;
+    color: var(--text-color);
+    display: none;
+    cursor: pointer;
+}
+.home{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+.home-content h3{
+    font-size: 3.2rem;
+    font-weight: 700;
+
+}
+.home-content h3:nth-of-type(2){
+    margin-top: 2rem;
+}
+span{
+    color: var(--main-color);
+}
+.home-content h1{
+    font-size: 5.6rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+.home-img img {
+    width: 35vw; /* ou ajuste para a largura desejada, por exemplo, 50% */
+    animation: floatImage 4s ease-in-out infinite;
+    max-width: 500px; /* ajuste o valor conforme necessário */
+    height: auto; /* mantém a proporção da imagem */
+}
+@keyframes floatImage{
+    0%{
+        transform: translateY(0);
+    }
+    50%{
+        transform: translateY(-2.4rem);
+    }
+    100% {
+        transform: translateY(0);
+    } 
+}
+.home-content p{
+    font-size: 1.6rem;
+    
+}
+.social-media a{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+    background: transparent;
+    border: .2rem solid var(--main-color);
+    border-radius: 50%;
+    font-size:2rem;
+    color: var(--main-color);
+    margin: 3rem 1.5rem 3rem 0;
+    transition: .5s ease;
+
+}
+.social-media a:hover{
+    background: var(--main-color);
+    color: var(--second-bg-color);
+    box-shadow: 0 0 1rem var(--main-color);
+}
+.btn{
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    background-color: var(--main-color);
+    border-radius: 4rem;
+    box-shadow: 0 0 1rem var(--main-color);
+    font-size: 1.6rem; 
+    color: var(--second-bg-color);
+    letter-spacing: .1rem;
+    font-weight: 600;
+    transition: .5s ease;
+}
+.btn:hover{
+    box-shadow: none;
+}
+.about{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    background: var(--second-bg-color);
+}
+.about-img img{
+    width: 35vh;
+}
+.heading{
+    text-align: center;
+    font-size: 4.5rem;
+}
+.about-content h2{
+    text-align: left;
+    line-height: 1.2;
+
+}
+
+.about-content h3{
+    font-size: 2.6rem;
+}
+.about-content p {
+    font-size: 1.6rem;
+    margin: 2rem 0 3rem;
+}
+.servicos h2{
+    margin-bottom: 5rem;
+}
+.servicos-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+.servicos-container .servicos-box{
+    flex: 1 1 30rem;
+    background: var(--second-bg-color);
+    padding: 3rem 2rem 4rem;
+    border-radius: 2rem;
+    text-align: center;
+    border: .2rem solid var(--bg-color);
+    transition: .5s ease;
+}
+.servicos-container .servicos-box:hover{
+    border-color: var(--main-color);
+    transform: scale(1.02);
+}
+.servicos-box i{
+    font-size: 7rem;
+    color: var(--main-color);
+}
+.servicos-box h3{
+    font-size: 2.6rem;
+}
+.servicos-box p{
+    font-size: 1.6rem;
+    margin: 1rem 0 3rem;
+}
+.portfolio{
+    background: var(--second-bg-color);
+}
+.portfolio h2{
+    margin-bottom: 4rem
+}
+.portfolio-container{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    align-items: center;
+    gap: 2.5rem;
+}
+.portfolio-container .portfolio-box{
+   position: relative;
+   border-radius: 2rem;
+   box-shadow: 0 0 1rem var(--bg-color);
+   overflow: hidden;
+   display: flex; 
+}
+
+.portfolio-box img{
+    width: 100%;
+    transition: .5s ease;
+}
+.portfolio-box:hover img{
+    transform: scale(1.1);
+}
+
+.portfolio-box .portfolio-layer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,.1), var(--main-color));
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 4rem;
+    transform: translateY(100%);
+    transition: .5s ease;
+}
+.portfolio-box:hover .portfolio-layer{
+    transform: translateY(0);
+}
+
+.portfolio-layer h4{
+    font-size: 2rem;
+}
+
+.portfolio-layer p{
+    font-size: 1.6rem;
+    margin: .3rem 0 1rem;
+}
+.portfolio-layer a{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+    background: var(--text-color);
+    border-radius: 50%;
+}
+.portfolio-layer a i{
+    font-size: 2rem;
+    color: var(--second-bg-color);
+}
+.contato h2{
+    margin-bottom: 3rem;
+}
+
+.contato form{
+    max-width: 70rem;
+    margin: 1rem auto;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.contato form .input-box{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.contato form .input-box input, .contato form
+textarea{
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 1.6rem;
+    color: var(--text-color);
+    background: var(--second-bg-color);
+    border-radius: .8rem;
+    margin: .7rem 0;
+}
+
+.contact form .input-box input{
+    width: 49%;
+}
+.contato form
+textarea{
+    resize: none;
+}
+.contato form .btn{
+    margin-top: 2rem;
+    cursor: pointer;
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 2rem 9%;
+    background: var(--second-bg-color);
+}
+.footer-text p{
+    font-size: 1.6rem;
+}
+
+.footer-iconTop a{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: .8rem;
+    background: var(--main-color);
+    border-radius: .8rem;
+    transition: .5s ease;
+}
+
+.footer-iconTop a:hover{
+    box-shadow: 0 0 1rem var(--main-color);
+}
+.footer-iconTop a i {
+    font-size: 2.4rem;
+    color: var(--second-bg-color);
+}
+
+@media (max-width:1200px){
+    html{
+        font-size: 55%;
+    }
+}
+
+@media (max-width:991px){
+    .header{
+        padding: 2rem 3%;
+    }
+    section{
+        padding: 10rem 3% 2rem;
+    }
+    .services{
+        padding-bottom: 7rem;
+    }
+    .portfolio{
+        padding-bottom: 7rem;
+    }
+    .footer{
+        padding: 2rem 3%;
+    }
+}
+
+@media (max-width: 768px){
+    #menu-icon {
+        display: block;
+    }
+    .navbar{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem 3%;
+        background: var(--bg-color);
+        border-top: .1rem solid rgba(0, 0, 0, .2);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .2);
+        display: none;
+        flex-direction: column;
+    }
+    .navbar.active{
+        display: flex;
+    }
+    .navbar a{
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+
+    }
+    .home{
+        flex-direction: column;
+    }
+    .home-content h3{
+        font-size: 2.6rem;
+    }
+    .home-content h1{
+        font-size: 5rem;
+    }
+    .home-img img{
+        width: 50vh;
+    }
+    .about{
+        flex-direction: column-reverse;
+    }
+    .about img{
+        width: 50vh;
+        margin-top: 4rem;
+    }
+    .services h2{
+        margin-bottom: 3rem;
+    }
+    .portfolio h2{
+        margin-bottom: 3rem;
+    }
+    .portfolio-container{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 450px){
+    html{
+        font-size: 50%;
+    }
+    .contato form .input-box input{
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px){
+   .home-img img{
+    width: 90vw;
+   }
+   .abour-img img{
+    width: 90vw;
+   }
+   .footer{
+    flex-direction: column-reverse;
+   }
+   .footer p{
+    text-align: center;
+    margin-top: 2rem;
+   }
+   /* AQUI ACABA O MEDIA QUERY DE 360px */
+}
+
+/* ------------------------------------------------------------- */
+/* ✅ ESTILOS DO CHATBOX, AGORA FORA DA MEDIA QUERY PARA FUNCIONAR SEMPRE */
+/* ------------------------------------------------------------- */
+
+/* A regra 'body { font-family: Arial, sans-serif; }' é redundante, mas movi para cá se for o desejo: */
+body { font-family: 'Poppins', sans-serif; } 
+/* Eu recomendo APAGAR esta linha, pois 'Poppins' já está definido no '*{ ... }' no topo do arquivo. */
+
+.chat-button {
+    position: fixed; 
+    bottom: 20px;
+    right: 20px; 
+    
+    /* 🔑 ESTAS DUAS LINHAS SÃO AS MAIS IMPORTANTES AGORA */
+    width: 80px; /* Largura desejada */
+    height: 80px; /* Altura desejada */
+    
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1000;
+    
+}
+
+@keyframes floatBall {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.chatbox {
+    position: fixed; /* AGORA VAI FIXAR! */
+    bottom: 90px; 
+    right: 20px;
+    width: 350px;
+    max-height: 500px;
+    display: none; 
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    z-index: 1000;
+    overflow: hidden;
+}
+.chat-header { background: #3b82f6; color: white; padding: 12px; font-weight: bold; }
+.chat-body { padding: 12px; flex:1; overflow-y:auto; }
+.chat-footer { display:flex; padding:8px; gap:4px; }
+.chat-footer input { flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; }
+.chat-footer button { padding:8px 12px; border:none; border-radius:6px; background:#3b82f6; color:white; cursor:pointer; }
+
+.msg.user { background:#3b82f6; color:white; padding:6px 10px; border-radius:6px; margin-bottom:5px; align-self:flex-end; }
+.msg.bot { background:#e5e5e5; color:black; padding:6px 10px; border-radius:6px; margin-bottom:5px; align-self:flex-start; }
+.chat-button img {
+    /* Use 'img' em vez de '.chat-icon-img' se não quiser criar uma nova classe */
+    width: 100%; 
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;/* Ou 'cover' */
+}
+/* ------------------------------------------------------------- */
+/* ✅ ESTILOS PARA O BALÃO DE FALA (SEMPRE VISÍVEL E ACIMA) */
+/* ------------------------------------------------------------- */
+
+/* O pseudo-elemento que será o balão de fala */
+.chat-button::before {
+    content: "Olá, sou Assistente Virtual"; /* O texto da mensagem */
+    position: absolute;
+    
+    /* Posiciona 80px acima da base do botão de 70px */
+    bottom: 80px; 
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    
+    /* Estilo visual do balão */
+    background-color: var(--second-bg-color); 
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap; 
+    font-size: 1.4rem;
+    z-index: 999; 
+
+    /* Está sempre visível */
+    opacity: 1; 
+    visibility: visible; 
+}
+
+/* O Triângulo/Ponta do Balão */
+.chat-button::after {
+    content: "";
+    position: absolute;
+    
+    /* Cria uma ponta logo abaixo do balão */
+    bottom: 74px; 
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    
+    /* Estilo visual da ponta */
+    width: 12px;
+    height: 12px;
+    background-color: var(--second-bg-color); 
+    z-index: 998; 
+    
+    /* Está sempre visível */
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Removemos as regras de :hover para que ele nunca se esconda */
+.chat-button:hover::before,
+.chat-button:hover::after {
+    opacity: 1; 
+    visibility: visible;
+}
