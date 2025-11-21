@@ -1,7 +1,7 @@
 // =========================================
 // CONFIGURAÇÃO DO BACKEND
 // =========================================
-const API_URL = "https://portifolio.squareweb.app/";
+const API_URL = "https://port.squareweb.app";
 
 
 // =========================================
@@ -239,5 +239,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 });
+
 
 
