@@ -1,7 +1,7 @@
 // =========================================
 // CONFIGURAÇÃO DO BACKEND
 // =========================================
-const API_URL = "http://localhost:5000/gerar-resposta";
+const API_URL = "portifolio.squareweb.app";
 
 
 // =========================================
@@ -239,3 +239,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 });
+
