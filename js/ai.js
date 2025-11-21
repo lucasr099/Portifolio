@@ -1,12 +1,42 @@
-// =========================================
-// CONFIGURAÇÃO DO BACKEND
-// =========================================
-const API_URL = "https://port.squareweb.app";
+
+const API_URL = "https://port.squareweb.app/ai/gerar-resposta";
+let backendOnline = true; // controla fallback automático
 
 
-// =========================================
-// FUNÇÕES PARA MENSAGENS NO CHAT
-// =========================================
+
+const dadosLucas = {
+    apresentacao: "Olá! Sou a assistente virtual de Lucas Costa, utilizando Inteligência Artificial.",
+    
+    perguntaInicial: "O que você deseja saber?",
+    
+    sobre: "Lucas Costa é um desenvolvedor backend especializado em Java e Python, com foco em APIs robustas, escaláveis e organizadas com padrões profissionais.",
+
+    formacao: "Lucas está cursando Engenharia de Software na Anhanguera, com previsão de conclusão em 05/2027. Estuda diariamente backend avançado, arquitetura e boas práticas.",
+
+    experiencia: 
+        "Possui experiência real em Java com Spring Boot, Python (Flask/Selenium), MySQL, PostgreSQL, SQLite, JPA, Hibernate, Git e MongoDB. " +
+        "Trabalha com criação de APIs REST, integrações, automações e sistemas completos.",
+
+    projetos: [
+        {
+            nome: "Golden Placa",
+            desc: "Sistema completo usando Python + Flask + SQLite, com login, posts, autenticação e design moderno."
+        },
+        {
+            nome: "Bot Selenium",
+            desc: "Automação profissional usando Python + Selenium WebDriver para tarefas repetitivas."
+        },
+        {
+            nome: "API Java Spring",
+            desc: "API REST completa com CRUD, autenticação, serviços, repositórios e documentação."
+        },
+        {
+            nome: "Web Integrations",
+            desc: "Microprojetos de integração com APIs externas, rotas otimizadas e utilidades backend."
+        }
+    ]
+};
+
 
 function appendMessage(who, text) {
     const output = document.getElementById("chat-output");
@@ -52,135 +82,118 @@ function appendOptions(options) {
     output.scrollTop = output.scrollHeight;
 }
 
+
+// =========================================
+// FALLBACK LOCAL
+// =========================================
+function respostaOffline(tipo) {
+    if (tipo === "projetos") {
+        return dadosLucas.projetos
+            .map(p => `• <strong>${p.nome}</strong>: ${p.desc}`)
+            .join("<br>");
+    }
+    return dadosLucas[tipo];
+}
+
+
+// =========================================
+// TENTATIVA DE USAR O BACKEND
+// =========================================
+async function chamarBackend(texto) {
+    if (!backendOnline) return null; // NÃO tenta mais se já caiu uma vez
+
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mensagem: texto })
+        });
+
+        if (!res.ok) throw new Error("Erro no backend");
+
+        const data = await res.json();
+
+        // se backend respondeu vazio ou sem IA configurada
+        if (!data || !data.resposta) {
+            backendOnline = false;
+            return null;
+        }
+
+        return data.resposta;
+
+    } catch (error) {
+        backendOnline = false; // MARCA COMO OFFLINE
+        return null;
+    }
+}
+
+
+// =========================================
+// FLUXO PRINCIPAL
+// =========================================
+
+let apresentou = false;
+
+function iniciarFluxo() {
+    if (apresentou) return;
+    apresentou = true;
+
+    appendMessage("IA", dadosLucas.apresentacao);
+
+    setTimeout(() => {
+        appendMessage("IA", dadosLucas.perguntaInicial);
+        mostrarTopicos();
+    }, 500);
+}
+
+function mostrarTopicos() {
+    appendOptions([
+        { label: "Sobre Lucas", onClick: () => mostrarInfo("sobre") },
+        { label: "Formação", onClick: () => mostrarInfo("formacao") },
+        { label: "Experiência", onClick: () => mostrarInfo("experiencia") },
+        { label: "Projetos", onClick: () => mostrarInfo("projetos") }
+    ]);
+}
+
+async function mostrarInfo(tipo) {
+    appendMessage("IA", "Buscando informações...");
+
+    let respostaFinal = null;
+
+    if (backendOnline) respostaFinal = await chamarBackend(tipo);
+
+    // remove "Buscando..."
+    document.getElementById("chat-output").lastChild.remove();
+
+    if (!respostaFinal) respostaFinal = respostaOffline(tipo);
+
+    appendMessage("IA", respostaFinal);
+
+    setTimeout(() => {
+        appendMessage("IA", "Deseja saber mais alguma coisa?");
+        mostrarTopicos();
+    }, 400);
+}
+
+
+// =========================================
+// ENVIO DO USUÁRIO
+// =========================================
 function sendUserInput() {
     const input = document.getElementById("chat-input");
     const text = input.value.trim();
     if (text === "") return;
 
     appendMessage("Você", text);
-
     input.value = "";
-    enviarParaBackend(text);
+
+    iniciarFluxo(); // inicia apresentação automática
 }
 
 
 // =========================================
-// ENVIO PARA O BACKEND
+// CONTROLE DO CHATBOT
 // =========================================
-
-async function enviarParaBackend(text) {
-    appendMessage("IA", "Digitando...");
-
-    const prompt = `
-Você é uma assistente profissional que responde exclusivamente sobre o desenvolvedor Lucas Costa. 
-Sempre responda de forma educada, clara, técnica e com foco profissional.
-Nunca diga que é uma IA; apenas responda.
-Pergunta do recrutador: "${text}"
-`;
-
-    try {
-        const res = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                mensagem: prompt
-            })
-        });
-
-        const data = await res.json();
-
-        // remove "Digitando..."
-        const output = document.getElementById("chat-output");
-        output.lastChild.remove();
-
-        appendMessage("IA", data.resposta);
-
-        perguntarMais();
-
-    } catch (error) {
-        appendMessage("IA", "Erro ao conectar com o servidor.");
-    }
-}
-
-
-// =========================================
-// FLUXO GUIADO
-// =========================================
-
-const respostasGuiadas = {
-    sobre: "Sou Lucas Costa, desenvolvedor backend com foco forte em Java e Python. Crio APIs robustas, aplicações escaláveis e automações eficientes.",
-    formacao: "Curso Análise e Desenvolvimento de Sistemas. Além disso, estudo diariamente conceitos avançados de backend e arquitetura.",
-    tecnologias: "Java (Spring Boot), Python (Flask/Selenium), MySQL, PostgreSQL, SQLite, JPA/Hibernate, Git, Docker básico.",
-    projetos: [
-        {
-            nome: "Golden Placa",
-            descricao: "Aplicação completa em Python + Flask + SQLite. Inclui sistema de usuários, postagens, login e interface moderna."
-        },
-        {
-            nome: "Bot Selenium",
-            descricao: "Automação web avançada para tarefas repetitivas usando Python + Selenium WebDriver."
-        },
-        {
-            nome: "API Java Spring",
-            descricao: "API REST completa com autenticação, CRUD, serviços, repositórios e documentação."
-        },
-        {
-            nome: "Web Integrations",
-            descricao: "Integrações backend com APIs externas, rotas otimizadas e microprojetos utilitários."
-        }
-    ]
-};
-
-function iniciarChat() {
-    appendMessage("IA", "Olá! Sou a assistente do Lucas. Quer conhecer mais sobre ele?");
-
-    appendOptions([
-        { label: "Sim", onClick: mostrarTopicos },
-        { label: "Não", onClick: () => appendMessage("IA", "Tudo bem! Estou aqui se precisar.") }
-    ]);
-}
-
-function mostrarTopicos() {
-    appendMessage("IA", "Sobre o que você quer saber?");
-
-    appendOptions([
-        { label: "Sobre mim", onClick: () => { appendMessage("IA", respostasGuiadas.sobre); perguntarMais(); } },
-        { label: "Formação", onClick: () => { appendMessage("IA", respostasGuiadas.formacao); perguntarMais(); } },
-        { label: "Tecnologias", onClick: () => { appendMessage("IA", respostasGuiadas.tecnologias); perguntarMais(); } },
-        { label: "Projetos", onClick: escolherProjeto }
-    ]);
-}
-
-function escolherProjeto() {
-    appendMessage("IA", "Escolha um dos projetos:");
-
-    const botoes = respostasGuiadas.projetos.map(p => ({
-        label: p.nome,
-        onClick: () => {
-            appendMessage("IA", p.descricao);
-            perguntarMais();
-        }
-    }));
-
-    botoes.push({ label: "Voltar", onClick: mostrarTopicos });
-
-    appendOptions(botoes);
-}
-
-function perguntarMais() {
-    appendOptions([
-        { label: "Sim", onClick: mostrarTopicos },
-        { label: "Não", onClick: () => appendMessage("IA", "Obrigado por visitar o portfólio do Lucas!") }
-    ]);
-}
-
-
-// =========================================
-// CONTROLE DO ROBÔ
-// =========================================
-
 document.addEventListener("DOMContentLoaded", () => {
     const bot = document.getElementById("ai-bot");
     const chat = document.getElementById("ai-chat");
@@ -193,11 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
             chat.classList.remove("hidden");
             chat.setAttribute("aria-hidden", "false");
 
-            if (!chat.dataset.started) {
-                iniciarChat();
-                chat.dataset.started = "true";
-            }
-
         } else {
             chat.classList.add("hidden");
             chat.setAttribute("aria-hidden", "true");
@@ -209,36 +217,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("chat-input").addEventListener("keypress", (e) => {
         if (e.key === "Enter") sendUserInput();
     });
-    document.addEventListener("DOMContentLoaded", () => {
-    const bot = document.getElementById("ai-bot");
-    const chat = document.getElementById("ai-chat");
-    const sendBtn = document.getElementById("chat-send");
-
-    bot.addEventListener("click", () => {
-        if (chat.classList.contains("hidden")) {
-            chat.classList.remove("hidden");
-            chat.setAttribute("aria-hidden", "false");
-
-            if (!chat.dataset.started) {
-                iniciarChat();
-                chat.dataset.started = "true";
-            }
-
-        } else {
-            chat.classList.add("hidden");
-            chat.setAttribute("aria-hidden", "true");
-        }
-    });
-
-    sendBtn.addEventListener("click", sendUserInput);
-
-    document.getElementById("chat-input")
-        .addEventListener("keypress", (e) => {
-            if (e.key === "Enter") sendUserInput();
-        });
 });
-
-});
-
-
-
