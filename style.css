@@ -487,6 +487,7 @@ body { font-family: 'Poppins', sans-serif; }
     bottom: 90px; 
     right: 20px;
     width: 350px;
+    height: 400
     max-height: 500px;
     display: none; 
     flex-direction: column;
@@ -565,4 +566,5 @@ body { font-family: 'Poppins', sans-serif; }
 .chat-button:hover::after {
     opacity: 1; 
     visibility: visible;
+
 }
